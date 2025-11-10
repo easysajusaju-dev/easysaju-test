@@ -228,21 +228,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
       if (!saved) throw new Error("시트 저장 실패");
 
-      // ✅ [2] 결제 페이지 리다이렉트 (NICEPAY)
-      const priceForRedirect = Number(productPrice || 0);
-      const paymentUrl = `payment.html?oid=${encodeURIComponent(orderId)}&product=${encodeURIComponent(
-        productName
-      )}&price=${priceForRedirect}`;
-      window.location.href = paymentUrl;
+      // ✅ [2] 서버에 토큰 요청 후 리다이렉트
+const API_BASE = "https://my-payment-server-test.vercel.app";
 
-    } catch (err) {
-      console.error(err);
-      alert(err?.message || "⚠️ 오류가 발생했습니다. 다시 시도해주세요.");
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = "사주분석 신청하기";
-      }
-    }
+try {
+  // 🔸 서버에 안전하게 주문 시작 요청 (시트는 위에서 이미 저장됨)
+  const startRes = await fetch(`${API_BASE}/api/pay/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      oid: orderId,
+      goodsName: productName
+    }),
+  });
+
+  const startData = await startRes.json();
+  if (!startData.ok) throw new Error(startData.error || "주문 시작 실패");
+
+  // 🔸 토큰만으로 결제 페이지 이동 (가격/상품 노출 X)
+  window.location.href = `/payment.html?token=${encodeURIComponent(startData.token)}`;
+
+} catch (err) {
+  console.error("❌ 주문 시작 실패:", err);
+  alert(err?.message || "⚠️ 결제 시작 중 오류가 발생했습니다. 다시 시도해주세요.");
+}
+
   });
 });
