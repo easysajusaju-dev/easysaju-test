@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f0f2f5; /* 페이지 전체 배경 */
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    font-size: 0; 
+}
+
+.image-section img {
+    width: 100%;
+    display: block; /* 이미지 아래 작은 여백 제거 */
+}
+
+.form-container {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 15px 30px 30px 30px; /* 위쪽 여백(padding-top)만 15px로 줄임 */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="date"],
+input[type="email"], /* <--- 이 부분을 추가합니다. */
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #ffffff; /* 배경색 강제 지정 */
+    color: #000000; /* 글자색 강제 지정 */
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding: 0;
+    width: 100%;
+    border-bottom: 1px solid #4a627c;
+    padding-bottom: 5px;
+}
+
+.person-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.person-info .full-width {
+    grid-column: 1 / -1; /* 이름 필드는 한 줄 전체 사용 */
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #8e44ad; /* 보라색 버튼 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #732d91;
+}
+
+#result {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 500;
+}
+/* style.css 파일 맨 아래에 추가 */
+
+.price-section {
+    padding: 20px 30px;
+    background-color: #ffffff;
+    color: #333;
+    border-bottom: 10px solid #f0f2f5;
+}
+.price-section:empty {
+    padding: 0;
+    border: none;
+}
+.price-section h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+.price-item:last-child {
+    border-bottom: none;
+}
+.price-details {
+    text-align: left;
+}
+.price-details .name {
+    font-weight: 700;
+    font-size: 16px;
+}
+.price-details .desc {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+.price-tag {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    white-space: nowrap;
+    padding-left: 15px;
+}
+.price-category {
+    margin-bottom: 25px;
+}
+.price-category:last-child {
+    margin-bottom: 0;
+}
+/* style.css 파일 맨 아래에 추가 */
+
+/* 생년월일 드롭다운 그룹 */
+.birth-select {
+    display: flex;
+    gap: 10px;
+}
+.birth-select select {
+    flex: 1;
+}
+
+/* 버튼형 라디오/체크박스 */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+.button-group input[type="radio"] {
+    display: none; /* 실제 라디오 버튼 숨기기 */
+}
+.button-group label {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #55687d;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+/* 선택됐을 때 스타일 */
+.button-group input[type="radio"]:checked + label {
+    background-color: #ffffff;
+    color: #2c3e50;
+    border-color: #ffffff;
+    font-weight: 700;
+}
+
+/* style.css 파일에 이 코드로 교체하세요 */
+
+/* 동의 항목 섹션 - 수정본 */
+.agree-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #22303f;
+    border-radius: 4px;
+}
+
+/* 연락처 입력 그룹 */
+.contact-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.contact-group select {
+    flex: 1;
+}
+.contact-group input {
+    flex: 1.5;
+    text-align: center;
+}
+.contact-group::before, .contact-group::after {
+    content: '-';
+    color: #ffffff;
+}
+/* style.css 파일 맨 아래에 추가 */
+
+
+/* style.css 파일 맨 아래에 추가 */
+
+/* style.css 파일의 고정 헤더 관련 코드 전체를 이 코드로 교체 */
+
+/* ===== 고정 헤더 스타일 (업그레이드 버전) ===== */
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* 헤더의 높이를 60px로 고정 */
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 0 20px; /* 위아래 패딩은 0, 좌우 패딩은 20px */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 핵심: 모든 자식 요소를 세로 중앙 정렬 */
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.header-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.header-logo {
+    height: 40px; /* 로고 높이를 40px로 지정 (헤더 높이 60px보다 작게) */
+    width: auto;
+    margin-right: 12px;
+}
+
+.header-title {
+    font-size: 20px; /* 글자 크기를 20px로 더 키움 */
+    font-weight: 700;
+    color: #333;
+    /* line-height 속성은 align-items 때문에 더 이상 필요 없으므로 삭제 */
+}
+
+.header-button {
+    display: inline-block;
+    padding: 10px 20px; /* 버튼 크기 키움 */
+    font-size: 15px; /* 버튼 글자 크기 키움 */
+    font-weight: 700;
+    color: #fff;
+    background-color: #00a0b0;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    white-space: nowrap; /* 버튼 글자가 줄바꿈되지 않도록 */
+}
+.header-button:hover {
+    background-color: #007a85;
+}
+
+/* 헤더가 내용을 가리지 않도록 main-container에 위쪽 여백 추가 */
+.main-container {
+    margin-top: 60px; /* 헤더의 높이와 똑같이 맞춰줌 */
+}
+/* 아래 내용만 복사하세요 */
+.agree-section .agree-box {
+    margin-bottom: 8px;
+}
+.agree-section .agree-box:first-child {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #555;
+}
+.agree-section .agree-box label {
+    font-size: 13px;
+    line-height: 1.2;
+}
+.agree-section .terms-box {
+    display: none;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #ccc;
+    background-color: #333;
+    border: 1px solid #555;
+    padding: 10px;
+    height: 100px;
+    width: 100%;
+    box-sizing: border-box;
+}
+/* ================================================= */
+/* [최종 수정] 개인정보 동의 항목 스타일 (완성본)     */
+/* ================================================= */
+
+/* 동의 섹션 전체를 감싸는 박스 */
+.agree-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #22303f;
+    border-radius: 4px;
+}
+
+/* '전체동의' 항목의 스타일 (구분선과 간격) */
+.agree-section .agree-box:first-child {
+    border-bottom: 1px solid #4a627c;
+    padding-bottom: 10px;
+    margin-bottom: 10px; /* '전체동의'와 '필수' 사이의 간격 */
+}
+
+/* '전체동의' 라벨 텍스트만 굵게 */
+.agree-section .agree-box:first-child label {
+    font-weight: 700;
+}
+
+/* ★★★ 핵심: [필수]와 [선택] 항목이 포함된 각 줄의 스타일 ★★★ */
+/* !important를 사용하여 다른 모든 스타일을 무시하고 강제로 적용합니다. */
+.agree-section .agree-box {
+    display: flex !important;
+    align-items: center !important;
+    padding: 1px 0 !important;      /* 위아래 여백을 최소화 */
+    margin: 0 !important;           /* ★ 각 줄 사이의 외부 여백을 완전히 제거 */
+}
+
+/* 라벨 텍스트 스타일 강제 지정 */
+.agree-section .agree-box label {
+    font-size: 12px !important;     /* 글자 크기를 강제로 12px로 줄임 */
+    line-height: 1.1 !important;    /* 줄간격을 강제로 촘촘하게 만듦 */
+    margin: 0 !important;           /* 라벨 자체의 모든 여백 제거 */
+    padding: 0 !important;          /* 라벨 자체의 모든 패딩 제거 */
+    display: inline-block !important; /* 다른 곳의 display:block 속성을 무시 */
+    font-weight: 400 !important;    /* 굵기를 보통으로 강제 지정 */
+}
+
+/* 체크박스 스타일 강제 지정 */
+.agree-section .agree-box input[type="checkbox"] {
+    margin: 0 8px 0 0 !important;   /* 위,아래,왼쪽 여백 0 / 오른쪽 여백만 8px */
+    transform: scale(0.9);          /* 체크박스 크기를 약간 줄여 더 작아보이게 함 */
+    padding: 0 !important;
+    width: auto !important;
+}
+
+/* 약관 보기 [보기] 텍스트 스타일 */
+.agree-section .toggle-text {
+    color: #a9cce3;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 5px; /* 앞 텍스트와 약간의 간격 */
+}
+
+/* 약관 내용 박스 (기본 숨김) */
+.agree-section .terms-box {
+    display: none;
+    width: 100%;
+    height: 80px;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: 12px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+/* ---------------------------------------------- */
+/* 추가된 사이드 네비게이션 스타일 */
+/* ---------------------------------------------- */
+
+/* 기존 로고 링크를 메뉴 버튼으로 활용 */
+.header-logo-link .header-logo { display: none; } /* 기존 이미지 숨기기 */
+.header-logo-link:before { /* 햄버거 아이콘 생성 */
+    content: '\2630';
+    font-size: 24px;
+    color: #333;
+}
+
+/* 반투명 배경 */
+#nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+#nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 사이드바 기본 스타일 (숨겨진 상태) */
+#side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+/* 사이드바 활성화 스타일 (보이는 상태) */
+#side-nav.active {
+    transform: translateX(0);
+}
+
+/* 사이드바 헤더 */
+#side-nav .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+#side-nav .logo-in-nav {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+#close-nav-btn {
+    font-size: 30px;
+    font-weight: bold;
+    color: #888;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 사이드바 메뉴 목록 */
+#side-nav .nav-menu {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+#side-nav .nav-menu li a,
+#side-nav .nav-menu .accordion-header {
+    display: block;
+    padding: 15px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    border-bottom: 1px solid #f5f5f5;
+}
+#side-nav .nav-menu li a:hover {
+    background-color: #f9f9f9;
+}
+
+/* 아코디언 메뉴 스타일 */
+.accordion .accordion-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.accordion .arrow {
+    transition: transform 0.3s;
+}
+.accordion.active .arrow {
+    transform: rotate(180deg);
+}
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #fafafa;
+}
+.accordion.active .accordion-content {
+    max-height: 500px; /* 펼쳐질 최대 높이, 충분히 크게 설정 */
+    transition: max-height 0.5s ease-in;
+}
+.accordion-content a {
+    padding-left: 35px !important;
+    font-size: 14px !important;
+    color: #555 !important;
+}
+
+/* 사이드바 푸터 */
+#side-nav .nav-footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+#side-nav .kakao-btn {
+    display: block;
+    background-color: #FEE500;
+    color: #191919;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+#side-nav .nav-footer p {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+}
+/* ---------------------------------------------- */
+/* 사이드 네비게이션 디자인 업그레이드 */
+/* ---------------------------------------------- */
+
+/* 사이드바 헤더 로고 스타일 */
+#side-nav .logo-in-nav {
+    display: flex; /* 로고 이미지와 텍스트를 나란히 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 8px; /* 이미지와 텍스트 사이 간격 */
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+}
+#side-nav .logo-in-nav img {
+    height: 30px; /* 로고 이미지 높이 조절 */
+    width: auto;
+}
+
+/* 닫기 버튼(X) 크기 키우기 */
+#side-nav #close-nav-btn {
+    font-size: 40px;
+}
+
+/* -- 폰트 스타일 변경 (핵심) -- */
+/* 1. 메인 메뉴 항목 (굵고 크게) */
+#side-nav .nav-menu > li > a, 
+#side-nav .nav-menu > li > .accordion-header {
+    font-size: 22px; /* 글씨 크기를 19px로 통일 (더 키우고 싶으면 이 숫자를 조절하세요) */
+    font-weight: 700; /* 굵은 글씨 */
+    color: #222;
+    padding: 16px 18px;
+}
+/* 2. 서브 메뉴 항목 (보통 굵기, 약간 작은 글씨) */
+.accordion-content a {
+    font-size: 18px !important; /* 메인 메뉴보다 약간 작게 */
+    font-weight: 400 !important; /* 보통 굵기 (normal) */
+    color: #444 !important; /* 메인 메뉴보다 약간 연한 색 */
+    padding: 14px 20px 14px 35px !important; /* 왼쪽 들여쓰기 유지 및 여백 조절 */
+}
+
+/* 아코디언 메뉴가 활성화되었을 때 배경색 변경 */
+.accordion.active {
+    background-color: #f7f7f7;
+}
+.accordion.active .accordion-content {
+    background-color: transparent; /* 하위 메뉴 배경은 투명하게 */
+}
+
+/* 카카오톡 문의 버튼 등 푸터 영역 여백 조절 */
+#side-nav .nav-footer {
+    padding: 25px 20px;
+}
+/* 헤더: 버거 ↔ 로고 ↔ 글씨 간격, 로고 보이게 */
+.header-logo-link{
+  display:flex; align-items:center; gap:10px;   /* 간격: 8~14px로 취향조절 */
+  text-decoration:none; color:#222;
+}
+.header-logo{ height:22px; width:auto; display:inline-block !important; }
+#open-nav-btn .burger{ font-size:22px; line-height:1; }
+.header-title{ font-weight:700; font-size:18px; }
+
+/* 예전에 로고 숨기던 규칙 덮어쓰기(필수) */
+.header-logo-link::before{ content:none !important; } /* 옛 ☰ 의사요소 제거 */
+.header-logo-link .header-logo{ display:inline-block !important; }
+/* 헤더 왼쪽: 햄버거 + 로고 + 텍스트 모두 보이게 + 간격 주기 */
+.header-logo-link{
+  display: flex;
+  align-items: center;
+  gap: 10px;                 /* 햄버거 ↔ 로고 ↔ 글씨 간격: 8~14px로 조절 */
+  text-decoration: none;
+  color: #222;
+}
+
+/* 의사요소로 만든 옛 햄버거 제거(겹침 방지) */
+.header-logo-link::before{ content: none !important; }
+
+/* 실제 햄버거 span 강제 표시 */
+#open-nav-btn .burger{
+  display: inline-block !important;
+  font-size: 22px;           /* 크기 조절 */
+  line-height: 1;
+  color: #222;
+  margin-right: 2px;         /* 필요 시 0~6px 조정 */
+}
+
+/* 로고 이미지 확실히 보이게 */
+.header-logo{
+  display: inline-block !important;
+  height: 22px;              /* 20~26px로 조절 */
+  width: auto;
+}
+
+/* 텍스트 스타일 */
+.header-title{
+  font-weight: 700;
+  font-size: 18px;           /* 16~20px로 조절 */
+}
+/* 카카오 버튼에 아이콘 붙이기(사이드바/인덱스 공통) */
+#side-nav .kakao-btn,
+.kakao-btn{
+  display: inline-flex;               /* 아이콘+텍스트 가로 배치 */
+  align-items: center;
+  justify-content: center;
+  gap: 8px;                           /* 아이콘↔텍스트 간격 (6~12px 조절) */
+}
+
+/* 카카오 말풍선 아이콘 */
+#side-nav .kakao-btn::before,
+.kakao-btn::before{
+  content: "";
+  width: 18px;                        /* 아이콘 크기 (16~22px 조절) */
+  height: 18px;
+  background: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
+<path fill="%23191919" d="M12 3c-5.52 0-10 3.58-10 8 0 2.4 1.5 4.53 3.9 5.93L4 21l4.5-2.6c1.1.27 2.28.4 3.5.4 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>\
+</svg>') no-repeat center/contain;
+}
