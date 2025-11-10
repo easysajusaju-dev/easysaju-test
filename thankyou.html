@@ -168,7 +168,7 @@ main { padding: 2rem 1.5rem; text-align: center; }
         <div class="info-line"><span class="label">🧾 상품명:</span><span class="value" id="product-name">-</span></div>
         <div class="info-line"><span class="label">💳 결제금액:</span><span class="value" id="product-price">-</span></div>
         <div class="info-line"><span class="label">🧩 주문번호:</span><span class="value" id="order-id">-</span></div>
-        <button class="btn-primary" onclick="location.href='https://easysajusaju-dev.github.io/'">홈으로 돌아가기</button>
+        <button class="btn-primary" onclick="location.href='https://easysaju-test.vercel.app/'">홈으로 돌아가기</button>
       </div>
     </main>
 
@@ -200,24 +200,46 @@ main { padding: 2rem 1.5rem; text-align: center; }
     </footer>
   </div>
 
-  <script>
-    // URL 파라미터 불러오기
-    const params = new URLSearchParams(window.location.search);
-    const product = decodeURIComponent(params.get("product") || "상품 정보 없음");
-    const price = Number(params.get("price") || 0).toLocaleString() + "원";
-    const oid = params.get("oid") || "-";
+ <script>
+(function(){
+  // ?token=... 꺼내기
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token");
 
-    document.getElementById("product-name").textContent = product;
-    document.getElementById("product-price").textContent = price;
-    document.getElementById("order-id").textContent = oid;
+  // 토큰 없으면 실패 처리
+  if (!token) {
+    alert("결제 정보 확인 중 오류가 발생했습니다. (토큰 없음)");
+    location.replace("https://easysaju-test.vercel.app/payment-fail.html");
+    return;
+  }
 
-    // 사업자정보 토글
-    document.getElementById('info-toggle-button').addEventListener('click', () => {
-      const details = document.getElementById('business-info-details');
-      const arrow = document.getElementById('info-arrow');
-      details.classList.toggle('show');
-      arrow.textContent = details.classList.contains('show') ? '▲' : '▼';
-    });
-  </script>
+  // 🔧 토큰 서버 URL (콜백에서 저장한 그 URL 동일)
+  const GAS_TOKEN_URL = "<?= 넣을 수 없으면 그대로 두세요. thankyou에선 'getToken' 요청만 보낼 것 ?>";
+
+  // getToken 요청은 콜백과 동일한 GAS에 보낼 것 (POST JSON)
+  fetch("<<여기에 1단계에서 만든 GAS_TOKEN_URL 붙여넣기>>", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mode: "getToken", token })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (!data.ok) throw new Error(data.error || "조회 실패");
+
+    // 화면 채우기 (id는 기존 것 유지)
+    document.getElementById("product-name").textContent = data.goodsName || "상품 정보 없음";
+    document.getElementById("product-price").textContent = Number(data.amount || 0).toLocaleString() + "원";
+    document.getElementById("order-id").textContent = data.orderId || "-";
+  })
+  .catch(err => {
+    console.error("thankyou token fetch error:", err);
+    alert("결제 정보 확인 중 오류가 발생했습니다.");
+    location.replace("https://easysaju-test.vercel.app/payment-fail.html");
+  });
+
+  // (기존 사업자 토글 등의 스크립트가 여기에 더 있다면 그대로 두셔도 됩니다.)
+})();
+</script>
+
 </body>
 </html>
