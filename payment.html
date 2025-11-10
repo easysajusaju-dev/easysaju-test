@@ -232,45 +232,47 @@
 
 <script>
 const API_BASE = "https://my-payment-server-test.vercel.app";
+const token = new URLSearchParams(location.search).get("token");
 
-function getParam(k){ return new URLSearchParams(location.search).get(k); }
-function num(v){ return Number(v||0) || 0; }
+let ORDER = null; // { oid, goodsName, amount }
 
-// URL 파라미터
-const OID     = getParam("oid");
-const PRODUCT = decodeURIComponent(getParam("product") || "");
-const PRICE   = num(getParam("price")); // 실제 결제 금액 (시트의 할인된 금액)
-const DISCOUNT_RATE = 30; // ✅ 고정 할인율 30%
+// ✅ 페이지 로드 시 토큰을 서버에 검증 요청
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    if (!token) throw new Error("토큰이 없습니다. 결제 링크가 잘못되었습니다.");
 
-// ✅ 화면 세팅 (원가 계산 + 표시)
-document.addEventListener("DOMContentLoaded", () => {
-  const originalPrice = Math.round(PRICE / (1 - DISCOUNT_RATE / 100)); // 원가 역산
-  const discountAmount = originalPrice - PRICE;
+    const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || "주문 정보를 불러오지 못했습니다.");
 
-  // 상품 정보 표시
-  document.getElementById("hero-title").textContent = `이지사주 - ${PRODUCT || '상품'}`;
-  document.getElementById("pay-product-name").textContent  = PRODUCT || '상품명';
-  document.getElementById("pay-product-price").textContent = `${originalPrice.toLocaleString()}원`;
-  document.getElementById("pay-discount").textContent      = `-${discountAmount.toLocaleString()}원`;
-  document.getElementById("pay-final-price").textContent   = `${PRICE.toLocaleString()}원`;
+    // 🔸 서버에서 검증된 주문 정보 저장
+    ORDER = {
+      oid: data.oid,
+      goodsName: data.goodsName,
+      amount: Number(data.amount)
+    };
 
-  // 할인율 배지 (있으면 표시)
-  const badge = document.getElementById("discount-badge");
-  if (badge) {
-    badge.style.display = "inline-block";
-    badge.textContent = `-${DISCOUNT_RATE}%`;
+    // 🔸 화면 표시
+    document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
+    document.getElementById("pay-product-name").textContent = ORDER.goodsName;
+    document.getElementById("pay-product-price").textContent = `${ORDER.amount.toLocaleString()}원`;
+    document.getElementById("pay-final-price").textContent = `${ORDER.amount.toLocaleString()}원`;
+
+  } catch (e) {
+    console.error("❌ 결제정보 로드 실패:", e);
+    alert(e.message || "주문 정보를 불러오지 못했습니다.");
   }
 });
 
-// ✅ 통합 결제 함수
-function requestPay(type){
-  const oid = OID;
-  const product = PRODUCT;
-  const amount = PRICE; // 할인된 결제금액
+// ✅ 통합 결제 함수 (토큰 기반)
+function requestPay(type) {
+  if (!ORDER) {
+    alert("주문 정보가 없습니다. 다시 시도해주세요.");
+    return;
+  }
 
-   // 현재 카드만 가능
-  if(type !== "card"){
-    alert("🛠 해당 결제수단은 준비 중입니다. (현재: 카드만 가능)");
+  if (type !== "card") {
+    alert("🛠 현재 카드 결제만 가능합니다.");
     return;
   }
 
@@ -278,21 +280,22 @@ function requestPay(type){
   AUTHNICE.requestPay({
     clientId: "R2_29330d4bbbe14f5c85925e52e48e0721",
     method: "card",
-    orderId: oid,
-    amount: amount,
-    goodsName: product,
+    orderId: ORDER.oid,
+    amount: ORDER.amount,
+    goodsName: ORDER.goodsName,
     returnUrl: `${API_BASE}/api/pay/callback`,
 
-    fnError: function(err){
+    fnError: function (err) {
       console.error("❌ 인증 오류:", err);
       alert("결제가 취소되었거나 오류가 발생했습니다.");
     },
-    fnSuccess: function(res){
+    fnSuccess: function (res) {
       console.log("✅ 카드 인증 성공:", res);
-      alert("결제가 완료되었습니다!");
     }
   });
 }
+</script>
+
 
 // ✅ 푸터 토글 (사업자정보 열기/닫기)
 document.addEventListener('DOMContentLoaded', function() {
