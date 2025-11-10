@@ -7,7 +7,7 @@ const pageLoadTime = new Date();
 
 // ✅ Google Apps Script WebApp 주소 (시트 기록용)
 const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbz_SRAMhhOT396196sgEzHeDMNk_oF7IL-M5BpAReKum04hVtkVYw0AwY71P4SyEdm-/exec";
+  https://script.google.com/macros/s/AKfycbzhi4556hgBKctN3KVBlPdkl1vFD3oG7Wv7Hdm6pk16VGG8OF6q6EaPT8t_5WTX87Jb/exec";
 
 /* ------------------------------
  * 공통 UI 헬퍼
