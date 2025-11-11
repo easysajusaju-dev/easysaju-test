@@ -234,16 +234,18 @@ document.addEventListener("DOMContentLoaded", () => {
       data["개인정보수집동의"] = agree1 && agree1.checked ? "동의" : "미동의";
       data["광고정보수신동의"] = agree2 && agree2.checked ? "동의" : "미동의";
 
-      // ✅ [1] Google Sheet 기록
-      const body = new URLSearchParams(data);
-      const r = await fetch(APPS_SCRIPT_URL, { method: "POST", body });
-      const t = await r.text();
-      let j = {};
-      try {
-        j = JSON.parse(t);
-      } catch {}
-      const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
-      if (!saved) throw new Error("시트 저장 실패");
+// ✅ [1] Google Sheet 기록 (헤더 강제 추가 버전)
+const body = new URLSearchParams(data);
+const r = await fetch(APPS_SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body,
+});
+const t = await r.text();
+let j = {};
+try { j = JSON.parse(t); } catch {}
+const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
+if (!saved) throw new Error("시트 저장 실패");
 
       // ✅ [2] 서버에 토큰 요청 후 리다이렉트
       const startRes = await fetch(`${API_BASE}/api/pay/start`, {
