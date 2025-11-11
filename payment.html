@@ -277,6 +277,13 @@ function requestPay(type) {
   }
 
   // ✅ NICEPAY 결제 요청
+  console.log("🚀 결제요청 데이터:", {
+  orderId: ORDER.orderId,
+  goodsName: ORDER.goodsName,
+  amount: ORDER.amount,
+  returnUrl: `${API_BASE}/api/pay/callback`
+});
+
   AUTHNICE.requestPay({
     clientId: "R2_29330d4bbbe14f5c85925e52e48e0721",
     method: "card",
