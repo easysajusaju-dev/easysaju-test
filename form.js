@@ -248,7 +248,7 @@ const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
 if (!saved) throw new Error("시트 저장 실패");
 
       // ✅ 별도 Logger WebApp 호출 (독립 실행)
-fetch("https://script.google.com/macros/s/AKfycb_your_logger_webapp_id/exec", {
+fetch("https://script.google.com/macros/s/AKfycbyFlLhRZWQ0akKMJS1bqJNorlvSoViNbCA5MlX7_BtY28HuxCYQlW0RYODqF3q62vSX/exec", {
   method: "POST",
   headers: { "Content-Type": "application/x-www-form-urlencoded" },
   body: new URLSearchParams({
