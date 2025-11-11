@@ -200,46 +200,38 @@ main { padding: 2rem 1.5rem; text-align: center; }
     </footer>
   </div>
 
- <script>
-(function(){
-  // ?token=... 꺼내기
-  const params = new URLSearchParams(location.search);
-  const token = params.get("token");
+<script>
+const API_BASE = "https://my-payment-server-test.vercel.app";
+const token = new URLSearchParams(location.search).get("token");
 
-  // 토큰 없으면 실패 처리
-  if (!token) {
-    alert("결제 정보 확인 중 오류가 발생했습니다. (토큰 없음)");
-    location.replace("https://easysaju-test.vercel.app/payment-fail.html");
-    return;
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    if (!token) throw new Error("토큰이 없습니다. 결제 링크가 올바르지 않습니다.");
+
+    // ✅ 서버에서 토큰 검증 및 주문 정보 복호화 요청
+    const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || "결제 정보를 불러올 수 없습니다.");
+
+    // ✅ 결제 정보 표시
+    document.getElementById("order-id").textContent = data.orderId;
+    document.getElementById("goods-name").textContent = data.goodsName;
+    document.getElementById("amount").textContent = `${Number(data.amount).toLocaleString()}원`;
+    document.getElementById("pay-date").textContent = new Date(data.payDate).toLocaleString();
+    document.getElementById("pay-status").textContent = data.payStatus;
+    document.getElementById("receipt-link").innerHTML = data.receiptUrl
+      ? `<a href="${data.receiptUrl}" target="_blank">영수증 보기</a>`
+      : "없음";
+
+  } catch (err) {
+    console.error("❌ 결제 결과 표시 실패:", err);
+    document.getElementById("result").innerHTML = `
+      <p style="color:red;">결제 정보를 불러오는 중 오류가 발생했습니다.</p>
+      <p>${err.message}</p>`;
   }
-
-  // 🔧 토큰 서버 URL (콜백에서 저장한 그 URL 동일)
-  const GAS_TOKEN_URL = "https://script.google.com/macros/s/AKfycbx1LiZJ2A1beNiUOoScSswp97Bpf_g1eNqn1UanX3hFlA-Nqnoj3Qg0RPF0fLVE2CRuQQ/exec";
-
-  // getToken 요청은 콜백과 동일한 GAS에 보낼 것 (POST JSON)
-  fetch("<<여기에 1단계에서 만든 GAS_TOKEN_URL 붙여넣기>>", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mode: "getToken", token })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (!data.ok) throw new Error(data.error || "조회 실패");
-
-    // 화면 채우기 (id는 기존 것 유지)
-    document.getElementById("product-name").textContent = data.goodsName || "상품 정보 없음";
-    document.getElementById("product-price").textContent = Number(data.amount || 0).toLocaleString() + "원";
-    document.getElementById("order-id").textContent = data.orderId || "-";
-  })
-  .catch(err => {
-    console.error("thankyou token fetch error:", err);
-    alert("결제 정보 확인 중 오류가 발생했습니다.");
-    location.replace("https://easysaju-test.vercel.app/payment-fail.html");
-  });
-
-  // (기존 사업자 토글 등의 스크립트가 여기에 더 있다면 그대로 두셔도 됩니다.)
-})();
+});
 </script>
+
 
 </body>
 </html>
