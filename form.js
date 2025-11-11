@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       data["광고정보수신동의"] = agree2 && agree2.checked ? "동의" : "미동의";
 
 // ✅ [1] Google Sheet 기록 (헤더 강제 추가 버전)
-const body = new URLSearchParams(data);
+const body = new URLSearchParams(data).toString();
 const r = await fetch(APPS_SCRIPT_URL, {
   method: "POST",
   headers: { "Content-Type": "application/x-www-form-urlencoded" },
