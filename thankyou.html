@@ -199,28 +199,33 @@ main { padding: 2rem 1.5rem; text-align: center; }
       <p class="copyright">© 2025 이지사주. All rights reserved.</p>
     </footer>
   </div>
-
+  
 <script>
 const API_BASE = "https://my-payment-server-test.vercel.app";
 const token = new URLSearchParams(location.search).get("token");
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    if (!token) throw new Error("토큰이 없습니다. 결제 링크가 올바르지 않습니다.");
+    if (!token) throw new Error("토큰이 없습니다.");
 
-    const res = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
-    const data = await res.json();
+    const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
     if (!data.ok) throw new Error(data.error || "결제 정보를 불러올 수 없습니다.");
 
-    // ✅ HTML 표시 (id 이름 일치 수정)
-    document.getElementById("order-id").textContent = data.orderId || "-";
-    document.getElementById("product-name").textContent = data.goodsName || "-";
-    document.getElementById("product-price").textContent = `${Number(data.amount || 0).toLocaleString()}원`;
+    // ✅ 필드명 안전하게 처리
+    const orderId = data.orderId || data.oid || "-";
+    const goodsName = data.goodsName || "상품명 없음";
+    const amount = Number(data.amount || 0);
+
+    document.getElementById("product-name").textContent = goodsName;
+    document.getElementById("product-price").textContent = `${amount.toLocaleString()}원`;
+    document.getElementById("order-id").textContent = orderId;
 
   } catch (err) {
     console.error("❌ 결제 결과 표시 실패:", err);
-    alert("결제 정보를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    document.getElementById("order-id").textContent = "-";
   }
+});
 
   // ✅ 사업자 정보 토글
   const toggleButton = document.getElementById('info-toggle-button');
