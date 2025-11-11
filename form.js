@@ -160,12 +160,25 @@ document.addEventListener("DOMContentLoaded", () => {
         return y && m && d ? `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}` : "";
       }
 
-      // 연락처
-      const contact =
-        fd.get("contact") ||
-        (fd.get("contact1") || "") + (fd.get("contact2") || "") + (fd.get("contact3") || "");
-      data["연락처"] = "'" + contact.replace(/\D/g, "");
+      /// 연락처
+      let contact =
+       fd.get("contact") ||
+       (fd.get("contact1") || "") + (fd.get("contact2") || "") + (fd.get("contact3") || "");
 
+     // 공백/숫자 아닌 문자 제거
+       contact = contact.replace(/\D/g, "");
+
+     // 한국형 전화번호 포맷 강제 적용
+     if (contact.startsWith("82")) contact = "0" + contact.slice(2); // +82 → 0 변환
+    if (contact.length === 11) {
+        contact = contact.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    } else if (contact.length === 10) {
+     contact = contact.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+   }
+
+    // 시트 기록 시 "'"로 감싸면 구글시트가 자동 하이픈 제거하지 않음
+     data["연락처"] = "'" + contact;
+      
       // 상품 정보
       const { id: productId, name: productName, price: productPrice } = getSelectedProductInfo();
       data["상품ID"] = productId;
