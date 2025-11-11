@@ -1,5 +1,5 @@
 // ==============================
-// form.js (실서비스용 완성본)
+// form.js (UI + 시트저장 + 토큰결제 완성형)
 // ==============================
 
 // 페이지 로드 시점 기록
@@ -8,6 +8,9 @@ const pageLoadTime = new Date();
 // ✅ Google Apps Script WebApp 주소 (시트 기록용)
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzhi4556hgBKctN3KVBlPdkl1vFD3oG7Wv7Hdm6pk16VGG8OF6q6EaPT8t_5WTX87Jb/exec";
+
+// ✅ Vercel 서버 (결제용)
+const API_BASE = "https://my-payment-server-test.vercel.app";
 
 /* ------------------------------
  * 공통 UI 헬퍼
@@ -88,10 +91,11 @@ function setupImageJump() {
     });
   });
   const headerBtn = document.querySelector(".header-button");
-  if (headerBtn) headerBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    go();
-  });
+  if (headerBtn)
+    headerBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      go();
+    });
 }
 
 /* ------------------------------
@@ -116,16 +120,13 @@ function getSelectedProductInfo() {
  * 폼 제출 및 결제 리다이렉트
  * ------------------------------ */
 document.addEventListener("DOMContentLoaded", () => {
-  try {
-    populateDateSelects("p1");
-    populateDateSelects("p2");
-    setupHourMinuteSync("p1");
-    setupHourMinuteSync("p2");
-    setupAgreement();
-    setupImageJump();
-  } catch (e) {
-    console.error("init error", e);
-  }
+  // ✅ UI 초기화
+  populateDateSelects("p1");
+  populateDateSelects("p2");
+  setupHourMinuteSync("p1");
+  setupHourMinuteSync("p2");
+  setupAgreement();
+  setupImageJump();
 
   const formEl = document.getElementById("saju-form");
   if (!formEl) return;
@@ -151,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const orderId = "EZ" + Date.now();
       data["오더ID"] = orderId;
 
-      // 생년월일 조합
+      // 생년월일 조합 함수
       function getBirth(prefix) {
         const y = fd.get(`${prefix}_birth_year`);
         const m = fd.get(`${prefix}_birth_month`);
@@ -169,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const { id: productId, name: productName, price: productPrice } = getSelectedProductInfo();
       data["상품ID"] = productId;
       data["상품명"] = productName;
+      data["상품금액"] = productPrice;
 
       // 기본 필드
       data["이메일"] = fd.get("email") || "";
@@ -224,33 +226,31 @@ document.addEventListener("DOMContentLoaded", () => {
       const r = await fetch(APPS_SCRIPT_URL, { method: "POST", body });
       const t = await r.text();
       let j = {};
-      try { j = JSON.parse(t); } catch {}
+      try {
+        j = JSON.parse(t);
+      } catch {}
       const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
       if (!saved) throw new Error("시트 저장 실패");
 
       // ✅ [2] 서버에 토큰 요청 후 리다이렉트
-const API_BASE = "https://my-payment-server-test.vercel.app";
+      const startRes = await fetch(`${API_BASE}/api/pay/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ oid: orderId, goodsName: productName }),
+      });
 
-try {
-  // 🔸 서버에 안전하게 주문 시작 요청 (시트는 위에서 이미 저장됨)
-  const startRes = await fetch(`${API_BASE}/api/pay/start`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      oid: orderId,
-      goodsName: productName
-    }),
+      const startData = await startRes.json();
+      if (!startData.ok) throw new Error(startData.error || "주문 시작 실패");
+
+      window.location.href = `/payment.html?token=${encodeURIComponent(startData.token)}`;
+    } catch (err) {
+      console.error("❌ 신청 실패:", err);
+      alert(err?.message || "⚠️ 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "사주분석 신청하기";
+      }
+    }
   });
-
-  const startData = await startRes.json();
-  if (!startData.ok) throw new Error(startData.error || "주문 시작 실패");
-
-  // 🔸 토큰만으로 결제 페이지 이동 (가격/상품 노출 X)
-  window.location.href = `/payment.html?token=${encodeURIComponent(startData.token)}`;
-
-} catch (err) {
-  console.error("❌ 주문 시작 실패:", err);
-  alert(err?.message || "⚠️ 결제 시작 중 오류가 발생했습니다. 다시 시도해주세요.");
-}
-
-
+});
