@@ -13,7 +13,7 @@
 <!-- MS(윈도우) 타일용 아이콘 및 색상 설정 -->
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="https://www.easysaju.kr/images/ms-icon-144x144.png">
-
+    
 <!-- ================== ⭐ 소셜 공유(오픈 그래프) 설정 코드 ================== -->
 <meta property="og:title" content="종합사주 - 이지사주">
 <meta property="og:description" content="13년 명리전문가가 분석해 드리는 당신의 운세">
@@ -26,7 +26,26 @@
     <title>이지사주 신년운세 - 프리미엄 정통사주</title>
     <link rel="stylesheet" href="style.css">
     <!-- Meta Pixel Code -->
+<!-- ✅ Meta Pixel Code (이지사주 공용) -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)n._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  
+  fbq('init', '⚡YOUR_PIXEL_ID_HERE⚡'); // ← 여기에 당신의 Meta 픽셀 ID 넣기
+  fbq('track', 'PageView'); // 방문(랜딩 진입) 추적
+</script>
 
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=⚡YOUR_PIXEL_ID_HERE⚡&ev=PageView&noscript=1"/>
+</noscript>
+<!-- ✅ End Meta Pixel Code -->
     <!-- End Meta Pixel Code -->
 </head>
 <body>
