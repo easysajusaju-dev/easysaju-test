@@ -247,26 +247,6 @@ try { j = JSON.parse(t); } catch {}
 const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
 if (!saved) throw new Error("시트 저장 실패");
 
-      // ✅ 별도 Logger WebApp 호출 (독립 실행)
-fetch("https://script.google.com/macros/s/AKfycbyFlLhRZWQ0akKMJS1bqJNorlvSoViNbCA5MlX7_BtY28HuxCYQlW0RYODqF3q62vSX/exec", {
-  method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: new URLSearchParams({
-    orderId: orderId,
-    name: fd.get("p1_name"),
-    contact: contact,
-    referrer: document.referrer || "직접유입",
-    stayTime: `${Math.floor(stay / 60)}분 ${stay % 60}초`,
-    device: navigator.userAgent,
-    agree1: agree1 && agree1.checked ? "동의" : "미동의",
-    agree2: agree2 && agree2.checked ? "동의" : "미동의",
-    payStatus: "신청완료",
-    payDate: "",
-    utmSource: data["UTM소스"],
-    utmMedium: data["UTM매체"],
-    utmCampaign: data["UTM캠페인"]
-  }).toString()
-});
 
       
       // ✅ [2] 서버에 토큰 요청 후 리다이렉트
