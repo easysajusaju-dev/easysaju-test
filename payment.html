@@ -453,7 +453,7 @@
 
     let ORDER = null; // { orderId, goodsName, amount }
 
-    // ✅ 페이지 로드 시 토큰 검증 + 할인 표시 (30% 고정)
+// ✅ 페이지 로드 시 토큰 검증 + 예쁜 가격 표시 (정가 천원단위 반올림 + 정수 할인율)
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     if (!token) throw new Error("토큰이 없습니다. 결제 링크가 잘못되었습니다.");
@@ -468,24 +468,34 @@ document.addEventListener("DOMContentLoaded", async () => {
       amount: Number(data.amount)
     };
 
-    // ✅ 할인율 고정값
-    const DISCOUNT_RATE = 0.3;
+    // ✅ 최종 결제금액 (시트 금액)
+    const F = ORDER.amount;
 
-    // ✅ 역산 계산 (표시용)
-    const originalPrice = Math.round(ORDER.amount / (1 - DISCOUNT_RATE));
-    const discountAmount = originalPrice - ORDER.amount;
+    // ✅ 기준 할인율(역산용)
+    const BASE_DISCOUNT = 0.3;
+
+    // 1️⃣ 정가 계산 (30% 할인 역산 후 천원단위 반올림)
+    let rawOriginal = F / (1 - BASE_DISCOUNT);
+    let original = Math.round(rawOriginal / 1000) * 1000;
+
+    // 2️⃣ 정가가 실제 결제금액보다 작게 나오는 경우 보정
+    if (original <= F) original = Math.ceil((F + 1) / 1000) * 1000;
+
+    // 3️⃣ 실제 할인율 계산 (정수 반올림)
+    const rate = Math.round((1 - F / original) * 100);
+    const discount = original - F;
 
     // ✅ 화면 표시
     document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
     document.getElementById("pay-product-name").textContent = ORDER.goodsName;
-    document.getElementById("pay-product-price").textContent = `${originalPrice.toLocaleString()}원`;
-    document.getElementById("pay-discount").textContent = `-${discountAmount.toLocaleString()}원`;
-    document.getElementById("pay-final-price").textContent = `${ORDER.amount.toLocaleString()}원`;
+    document.getElementById("pay-product-price").textContent = `${original.toLocaleString()}원`;
+    document.getElementById("pay-discount").textContent = `-${discount.toLocaleString()}원`;
+    document.getElementById("pay-final-price").textContent = `${F.toLocaleString()}원`;
 
     // ✅ 할인율 배지 표시
     const badge = document.getElementById("discount-badge");
     if (badge) {
-      badge.textContent = `-${Math.round(DISCOUNT_RATE * 100)}%`;
+      badge.textContent = `-${rate}%`;
       badge.style.display = "inline-block";
     }
 
