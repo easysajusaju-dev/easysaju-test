@@ -268,7 +268,10 @@ fetch("https://script.google.com/macros/s/AKfycbyFlLhRZWQ0akKMJS1bqJNorlvSoViNbC
   }).toString()
 });
 
+// 💡 Logger WebApp에 충분히 기록되도록 잠깐 대기 (0.8초 정도)
+await new Promise(r => setTimeout(r, 800));
 
+      
       // ✅ [2] 서버에 토큰 요청 후 리다이렉트
       const startRes = await fetch(`${API_BASE}/api/pay/start`, {
         method: "POST",
