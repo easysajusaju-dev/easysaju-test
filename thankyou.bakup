@@ -167,6 +167,10 @@ main { padding: 2rem 1.5rem; text-align: center; }
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
         <div class="info-line"><span class="label">🧾 상품명:</span><span class="value" id="product-name">-</span></div>
         <div class="info-line"><span class="label">💳 결제금액:</span><span class="value" id="product-price">-</span></div>
+        <p style="text-align:center; color:#adb5bd; font-size:0.85rem; margin-top:1.2rem;">
+결제 내역과 상담 정보는 이지사주에서 안전하게 보관됩니다.<br>
+문의사항은 언제든 카카오톡 채널로 연락주세요 😊
+</p>
         <button class="btn-primary" onclick="location.href='https://easysaju-test.vercel.app/'">홈으로 돌아가기</button>
       </div>
     </main>
