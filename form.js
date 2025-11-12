@@ -247,7 +247,12 @@ try { j = JSON.parse(t); } catch {}
 const saved = (j && j.success) || j.row || /"success"\s*:\s*true/i.test(t);
 if (!saved) throw new Error("시트 저장 실패");
 
+if (!saved) throw new Error("시트 저장 실패");
 
+// ✅ [추가] Meta Pixel 전환 추적 코드 (Lead 이벤트)
+if (typeof fbq === "function") {
+  fbq('track', 'Lead'); // 신청 완료 시 Meta에 “리드 전환”으로 기록
+}
       
       // ✅ [2] 서버에 토큰 요청 후 리다이렉트
       const startRes = await fetch(`${API_BASE}/api/pay/start`, {
