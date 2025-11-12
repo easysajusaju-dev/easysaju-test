@@ -453,31 +453,47 @@
 
     let ORDER = null; // { orderId, goodsName, amount }
 
-    // ✅ 페이지 로드 시 토큰 검증
-    document.addEventListener("DOMContentLoaded", async () => {
-      try {
-        if (!token) throw new Error("토큰이 없습니다. 결제 링크가 잘못되었습니다.");
+    // ✅ 페이지 로드 시 토큰 검증 + 할인 표시 (30% 고정)
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    if (!token) throw new Error("토큰이 없습니다. 결제 링크가 잘못되었습니다.");
 
-        const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
-        const data = await r.json();
-        if (!data.ok) throw new Error(data.error || "주문 정보를 불러오지 못했습니다.");
+    const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || "주문 정보를 불러오지 못했습니다.");
 
-        ORDER = {
-          orderId: data.orderId,
-          goodsName: data.goodsName,
-          amount: Number(data.amount)
-        };
+    ORDER = {
+      orderId: data.orderId,
+      goodsName: data.goodsName,
+      amount: Number(data.amount)
+    };
 
-        document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
-        document.getElementById("pay-product-name").textContent = ORDER.goodsName;
-        document.getElementById("pay-product-price").textContent = `${ORDER.amount.toLocaleString()}원`;
-        document.getElementById("pay-final-price").textContent = `${ORDER.amount.toLocaleString()}원`;
+    // ✅ 할인율 고정값
+    const DISCOUNT_RATE = 0.3;
 
-      } catch (e) {
-        console.error("❌ 결제정보 로드 실패:", e);
-        alert(e.message || "주문 정보를 불러오지 못했습니다.");
-      }
-    });
+    // ✅ 역산 계산 (표시용)
+    const originalPrice = Math.round(ORDER.amount / (1 - DISCOUNT_RATE));
+    const discountAmount = originalPrice - ORDER.amount;
+
+    // ✅ 화면 표시
+    document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
+    document.getElementById("pay-product-name").textContent = ORDER.goodsName;
+    document.getElementById("pay-product-price").textContent = `${originalPrice.toLocaleString()}원`;
+    document.getElementById("pay-discount").textContent = `-${discountAmount.toLocaleString()}원`;
+    document.getElementById("pay-final-price").textContent = `${ORDER.amount.toLocaleString()}원`;
+
+    // ✅ 할인율 배지 표시
+    const badge = document.getElementById("discount-badge");
+    if (badge) {
+      badge.textContent = `-${Math.round(DISCOUNT_RATE * 100)}%`;
+      badge.style.display = "inline-block";
+    }
+
+  } catch (e) {
+    console.error("❌ 결제정보 로드 실패:", e);
+    alert(e.message || "주문 정보를 불러오지 못했습니다.");
+  }
+});
 
     // ✅ 결제 요청 함수
     function requestPay(type) {
