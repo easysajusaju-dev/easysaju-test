@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ==================== ⭐ 파비콘 설정 ==================== -->
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.easysaju.kr/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.easysaju.kr/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="https://www.easysaju.kr/images/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.easysaju.kr/images/favicon-16x16.png">
+  <link rel="shortcut icon" href="https://www.easysaju.kr/images/favicon.ico">
+
+  <!-- MS 타일 설정 -->
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="https://www.easysaju.kr/images/ms-icon-144x144.png">
+
+  <!-- ==================== ⭐ 오픈그래프 설정 ==================== -->
+  <meta property="og:title" content="종합사주 - 이지사주">
+  <meta property="og:description" content="13년 명리전문가가 분석해 드리는 당신의 운세">
+  <meta property="og:image" content="https://www.easysaju.kr/images/share.png">
+  <meta property="og:url" content="https://www.easysaju.kr/">
+  <meta property="og:type" content="website">
+
+  <title>이지사주 종합사주 - 프리미엄 정통사주 (1인용)</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ==================== ⭐ 서버 예열(Ping) 코드 ==================== -->
+  <script>
+    (function prewarm() {
+      try {
+        const url = "https://my-payment-server-test.vercel.app/api/ping";
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 3000);
+
+        fetch(url, {
+          method: "GET",
+          signal: controller.signal,
+          cache: "no-store"
+        }).catch(() => {});
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- ==================== ⭐ Meta Pixel Code ==================== -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;
+      n=f.fbq=function(){ n.callMethod ?
+        n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+      };
+      if(!f._fbq)f._fbq=n;
+      n.push=n; n.loaded=!0; n.version='2.0';
+      n.queue=[];
+      t=b.createElement(e); t.async=!0;
+      t.src=v;
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1159392269346574');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=1159392269346574&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- ============================================================ -->
+
+</head>
+
+<body>
+
+  <!-- ==================== ⭐ 상단 고정 헤더 ==================== -->
+  <div class="sticky-header">
+    <a href="javascript:void(0);" id="open-nav-btn" class="header-logo-link">
+      <span class="burger">&#9776;</span>
+      <span class="header-title">종합사주</span>
+    </a>
+    <a href="#saju-form" class="header-button">사주분석 신청하기</a>
+  </div>
+
+  <!-- ==================== ⭐ 사이드 메뉴 ==================== -->
+  <div id="nav-overlay"></div>
+
+  <nav id="side-nav">
+    <div class="nav-header">
+      <div class="logo-in-nav">
+        <img src="logo.png" alt="이지사주 로고">
+        <span>이지사주</span>
+      </div>
+      <a href="javascript:void(0);" id="close-nav-btn">&times;</a>
+    </div>
+
+    <ul class="nav-menu">
+      <li><a href="index.html">홈으로 가기</a></li>
+
+      <li class="accordion">
+        <div class="accordion-header">사주 분석 신청 <span class="arrow">&#9662;</span></div>
+        <div class="accordion-content">
+          <a href="saju_1p.html">프리미엄 종합사주</a>
+          <a href="saju_2p.html">이지사주 재회운</a>
+          <a href="saju_free.html">이지사주 신년운세</a>
+        </div>
+      </li>
+
+      <li class="accordion">
+        <div class="accordion-header">무료 운세 <span class="arrow">&#9662;</span></div>
+        <div class="accordion-content">
+          <a href="https://todayluck.coredev.co.kr/fortune-lab/yeyiqu" target="_blank">오늘의 운세</a>
+          <a href="saju_new.html">무료 운세 보기</a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="nav-footer">
+      <a href="http://pf.kakao.com/_xkAevn/chat" class="kakao-btn" target="_blank">카카오톡 문의</a>
+      <p>운영시간 평일 09:00~18:00</p>
+    </div>
+  </nav>
+
+  <!-- ==================== ⭐ 메인 컨테이너 ==================== -->
+  <div class="main-container">
+
+    <!-- 상단 이미지 -->
+    <div class="image-section">
+      <img src="images/saju1/0.png">
+      <img src="images/saju1/002.png">
+      <img src="images/saju1/003.png">
+      <img src="images/saju1/004.png">
+      <img src="images/saju1/액막이 사과(5-6).gif">
+      <img src="images/saju1/007.png">
+      <img src="images/saju1/008.png">
+      <img src="images/saju1/후기상세페이지gif.gif">
+      <img src="images/saju1/내용상세페이지(13-19).gif">
+      <img src="images/saju1/020.png">
+      <img src="images/saju1/021.gif">
+    </div>
+
+    <!-- ==================== ⭐ 신청 폼 ==================== -->
+    <div class="form-container">
+
+      <form id="saju-form">
+
+        <div class="form-group">
+          <label>이름</label>
+          <input type="text" name="p1_name" placeholder="이름">
+        </div>
+
+        <div class="form-group">
+          <label for="contact">연락처</label>
+          <input type="tel" id="contact" name="contact" placeholder="'-' 없이 숫자만">
+        </div>
+
+        <div class="form-group">
+          <label>생년월일</label>
+          <div class="birth-select">
+            <select name="p1_birth_year"><option value="">-년-</option></select>
+            <select name="p1_birth_month"><option value="">-월-</option></select>
+            <select name="p1_birth_day"><option value="">-일-</option></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>양/음력</label>
+          <div class="button-group">
+            <input type="radio" id="p1_solar" name="p1_solarlunar" value="양력" checked>
+            <label for="p1_solar">양력</label>
+
+            <input type="radio" id="p1_lunar" name="p1_solarlunar" value="음력">
+            <label for="p1_lunar">음력</label>
+
+            <input type="radio" id="p1_lunar_leap" name="p1_solarlunar" value="음력(윤달)">
+            <label for="p1_lunar_leap">음력(윤달)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>성별</label>
+          <div class="button-group">
+            <input type="radio" id="p1_male" name="p1_gender" value="남성" checked>
+            <label for="p1_male">남성</label>
+
+            <input type="radio" id="p1_female" name="p1_gender" value="여성">
+            <label for="p1_female">여성</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>태어난 시간</label>
+          <div class="birth-select">
+            <select name="p1_hour"><option value="">모름</option></select>
+            <select name="p1_minute"><option value="">모름</option></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">이메일 (선택)</label>
+          <input type="email" id="email" name="email" placeholder="분석 결과 수신용 이메일">
+        </div>
+
+        <!-- 상품 -->
+        <label for="product">상품 선택</label>
+        <select id="product" name="product"></select>
+
+        <!-- 약관 -->
+        <div class="agree-section">
+          <div class="agree-box">
+            <input type="checkbox" id="agree_all">
+            <label for="agree_all">전체동의 (필수항목, 광고성 정보 포함)</label>
+          </div>
+
+          <div class="agree-box">
+            <input type="checkbox" id="agree1" required>
+            <label for="agree1">[필수] 개인정보 수집·이용 동의</label>
+            <textarea class="terms-box" readonly>
+[필수] 개인정보 수집·이용 동의
+(내용 생략)
+            </textarea>
+          </div>
+
+          <div class="agree-box">
+            <input type="checkbox" id="agree2">
+            <label for="agree2">[선택] 광고성 정보 수신 동의</label>
+            <textarea class="terms-box" readonly>
+[선택] 광고성 정보 수신 동의
+(내용 생략)
+            </textarea>
+          </div>
+        </div>
+
+        <input type="hidden" id="utm_source" name="utm_source">
+        <input type="hidden" id="utm_medium" name="utm_medium">
+        <input type="hidden" id="utm_campaign" name="utm_campaign">
+
+        <button type="submit">사주분석 신청하기</button>
+        <div id="result"></div>
+      </form>
+    </div>
+
+    <!-- ==================== ⭐ 하단 이미지 ==================== -->
+    <div class="image-section">
+      <img src="images/saju1/022.png">
+      <img src="images/saju1/023.png">
+    </div>
+
+  </div>
+
+  <!-- ==================== ⭐ 외부 스크립트 ==================== -->
+
+  <script src="form.js"></script>
+
+  <!-- Google Script 초기 호출 -->
+  <script>
+    fetch("https://script.google.com/macros/s/AKfycbzhi4556hgBKctN3KVBlPdkl1vFD3oG7Wv7Hdm6pk16VGG8OF6q6EaPT8t_5WTX87Jb/exec", {
+      method: "GET",
+      mode: "no-cors"
+    });
+  </script>
+
+  <!-- 푸터 -->
+  <div id="copy" style="max-width:800px;margin:auto;padding:10px;font-size:12px;color:#666;">
+    <b>서비스명 : 이지사주</b><br>
+    대표자 : 안미정<br>
+    Contact : easysaju.saju@gmail.com<br>
+    통신판매신고 : 2025-고양일산동-1332
+  </div>
+
+  <!-- 사이드 메뉴 JS -->
+  <script src="script_index.js"></script>
+
+  <!-- 상품 목록 불러오기 -->
+  <script>
+    const PAGE_CATEGORY = "p_1";
+
+    async function loadProducts() {
+      try {
+        const res = await fetch(`${API_BASE}/api/products?category=${PAGE_CATEGORY}`);
+        const data = await res.json();
+
+        const select = document.getElementById("product");
+        select.innerHTML = "";
+
+        data.items.forEach(item => {
+          const opt = document.createElement("option");
+          opt.value = item.id;
+          opt.textContent = `${item.name} (${item.price.toLocaleString()}원)`;
+          select.appendChild(opt);
+        });
+      } catch (e) {
+        console.error(e);
+        alert("상품 목록 불러오기 실패!");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadProducts);
+  </script>
+
+  <!-- 🔘 카카오 플로팅 버튼 -->
+  <style>
+    .kakao-chat-button {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      width: 60px;
+      height: 60px;
+      background-color: #FEE500;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      z-index: 999;
+      transition: 0.2s;
+    }
+    .kakao-chat-button:hover {
+      transform: scale(1.05);
+    }
+    .kakao-chat-button img {
+      width:32px;height:32px;
+    }
+  </style>
+
+  <a href="http://pf.kakao.com/_xkAevn/chat" target="_blank" class="kakao-chat-button">
+    <img src="images/icons8-카카오-톡-48.png" alt="카카오톡 채널">
+  </a>
+
+</body>
+</html>
