@@ -3,6 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+   <!-- ==================== ⭐ 파비콘 설정 코드 (전체 주소) ==================== -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://easysaju-test.vercel.app/images/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://easysaju-test.vercel.app/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://easysaju-test.vercel.app/images/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://easysaju-test.vercel.app/images/favicon-16x16.png">
+<link rel="shortcut icon" href="https://easysaju-test.vercel.app/images/favicon.ico">
+
+<!-- MS(윈도우) 타일용 아이콘 및 색상 설정 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="https://easysaju-test.vercel.app/images/ms-icon-144x144.png">
+<!-- ======================================================================= -->
+ 
+ <!-- ================== ⭐ 소셜 공유(오픈 그래프) 설정 코드 ================== -->
+  <meta property="og:title" content="이지사주">
+  <meta property="og:description" content="13년 명리전문가가 분석해 드리는 당신의 운세">
+  <meta property="og:image" content="https://easysaju-test.vercel.app/images/share.png">
+  <meta property="og:url" content="https://easysaju-test.vercel.app/">
+  <meta property="og:type" content="website">
+<!-- ======================================================================= -->
+  
   <title>결제하기 - 이지사주</title>
 
   <style>
@@ -453,83 +474,62 @@
 
     let ORDER = null; // { orderId, goodsName, amount }
 
-   // ✅ 보기 좋은 정가/할인율(20~60%) 자동 계산 + 표시 업데이트
-(function applyPrettyPricing() {
-  const MIN_RATE = 20, MAX_RATE = 60;
-  // 탐색할 후보 할인율(퍼센트). 필요하면 숫자 더/빼도 됩니다.
-  const RATE_POOL = [20,22,25,27,30,33,35,38,40,45,50,55,60];
+// ✅ 페이지 로드 시 토큰 검증 + 예쁜 가격 표시 (정가 천원단위 반올림 + 정수 할인율)
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    if (!token) throw new Error("토큰이 없습니다. 결제 링크가 잘못되었습니다.");
 
-  const F = ORDER.amount; // 실제 결제 금액 (시트 금액)
+    const r = await fetch(`${API_BASE}/api/pay/order-info?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || "주문 정보를 불러오지 못했습니다.");
 
-  // 예쁜 가격 후보를 만드는 도우미: 19,900 / 20,000 / 20,500 같은 형태
-  function roundCandidates(n) {
-    const r100 = Math.round(n / 100) * 100;
-    const near1000 = Math.round(r100 / 1000) * 1000;           // x,000
-    const floor900 = Math.floor(r100 / 1000) * 1000 + 900;     // x,900
-    const ceil1000  = Math.ceil(r100 / 1000) * 1000;           // 위쪽 x,000
-    const mid500 = Math.round(r100 / 500) * 500;               // x,500
-    // 중복 제거 후 반환(가까운 후보 위주)
-    return Array.from(new Set([near1000, floor900, ceil1000, mid500])).sort((a,b)=>a-b);
-  }
+    ORDER = {
+      orderId: data.orderId,
+      goodsName: data.goodsName,
+      amount: Number(data.amount)
+    };
 
-  function findBestPricing(finalPrice) {
-    let best = null;
+    // ✅ 최종 결제금액 (시트 금액)
+    const F = ORDER.amount;
 
-    for (const r of RATE_POOL) {
-      const rawOrig = finalPrice / (1 - r / 100);      // 역산 정가(이상적)
-      const cands = roundCandidates(rawOrig);
-      for (const cand of cands) {
-        if (cand <= finalPrice) continue;              // 정가는 항상 최종가보다 커야 함
-        const effRate = Math.round((1 - finalPrice / cand) * 100); // 표시용 실제 할인율
-        if (effRate < MIN_RATE || effRate > MAX_RATE) continue;
+    // ✅ 기준 할인율(역산용)
+    const BASE_DISCOUNT = 0.3;
 
-        // "얼마나 자연스러운가" 점수: 역산값과 얼마나 가까운지 + 목표율과의 차이
-        const score = Math.abs(cand - rawOrig) + Math.abs(effRate - r) * 200;
-        if (!best || score < best.score) {
-          best = { original: cand, rate: effRate, discount: cand - finalPrice, score };
-        }
-      }
+    // 1️⃣ 정가 계산 (30% 할인 역산 후 천원단위 반올림)
+    let rawOriginal = F / (1 - BASE_DISCOUNT);
+    let original = Math.round(rawOriginal / 1000) * 1000;
+
+    // 2️⃣ 정가가 실제 결제금액보다 작게 나오는 경우 보정
+    if (original <= F) original = Math.ceil((F + 1) / 1000) * 1000;
+
+    // 3️⃣ 실제 할인율 계산 (정수 반올림)
+    const rate = Math.round((1 - F / original) * 100);
+    const discount = original - F;
+
+    // ✅ 화면 표시
+    document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
+    document.getElementById("pay-product-name").textContent = ORDER.goodsName;
+    document.getElementById("pay-product-price").textContent = `${original.toLocaleString()}원`;
+    document.getElementById("pay-discount").textContent = `-${discount.toLocaleString()}원`;
+    document.getElementById("pay-final-price").textContent = `${F.toLocaleString()}원`;
+
+    // ✅ 할인율 배지 표시
+    const badge = document.getElementById("discount-badge");
+    if (badge) {
+      badge.textContent = `-${rate}%`;
+      badge.style.display = "inline-block";
     }
 
-    // 후보가 하나도 없으면, 안전한 기본값(20% 기준 정가를 예쁘게 반올림)
-    if (!best) {
-      const raw = finalPrice / 0.8; // 20% 역산
-      const [fallback] = roundCandidates(raw).filter(v => v > finalPrice);
-      const orig = fallback || Math.ceil(raw / 100) * 100;
-      const rate = Math.round((1 - finalPrice / orig) * 100);
-      return { original: orig, rate, discount: orig - finalPrice, score: 9e9 };
-    }
-    return best;
+  } catch (e) {
+    console.error("❌ 결제정보 로드 실패:", e);
+    alert(e.message || "주문 정보를 불러오지 못했습니다.");
   }
-
-  const pretty = findBestPricing(F);
-
-  // ✅ 화면 업데이트 (실결제금액 F는 그대로)
-  document.getElementById("pay-product-name").textContent = ORDER.goodsName;
-  document.getElementById("pay-product-price").textContent = `${pretty.original.toLocaleString()}원`;
-  document.getElementById("pay-discount").textContent = `-${pretty.discount.toLocaleString()}원`;
-  document.getElementById("pay-final-price").textContent = `${F.toLocaleString()}원`;
-
-  const badge = document.getElementById("discount-badge");
-  if (badge) {
-    badge.textContent = `-${pretty.rate}%`;
-    badge.style.display = "inline-block";
-  }
-
-  // 히어로 타이틀도 유지
-  document.getElementById("hero-title").textContent = `이지사주 - ${ORDER.goodsName}`;
-})();
-
+});
 
     // ✅ 결제 요청 함수
     function requestPay(type) {
       if (!ORDER) {
         alert("주문 정보가 없습니다. 다시 시도해주세요.");
-        return;
-      }
-
-      if (type !== "card") {
-        alert("🛠 현재 카드 결제만 가능합니다.");
         return;
       }
 
@@ -542,7 +542,7 @@
 
       AUTHNICE.requestPay({
         clientId: "R2_29330d4bbbe14f5c85925e52e48e0721",
-        method: "card",
+        method: type,
         orderId: ORDER.orderId,
         amount: ORDER.amount,
         goodsName: ORDER.goodsName,
