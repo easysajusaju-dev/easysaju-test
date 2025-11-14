@@ -250,7 +250,7 @@
 
     <!-- ===== Header ===== -->
     <header class="header">
-      <h1>결제 완료</h1>
+      <h1>결제 오류</h1>
     </header>
 
     <!-- ===== Banner Section ===== -->
@@ -267,20 +267,13 @@
     <main>
       <div class="card">
         <h2>결제 처리 중 오류가 발생했습니다. 🙏</h2>
-        <p>
-          결제가 완료되지 않았거나 </p> <p>승인정보 검증 중 오류가 발생했습니다.<br>
-          잠시 후 다시 시도해 주세요.        </p>
+        <p>결제가 완료되지 않았거나 </p>
+        <p>승인정보 검증 중 오류가 발생했습니다.</p>
+        </p>잠시 후 다시 시도해 주세요.</p>
 
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
 
-        <div class="info-line">
-          <span class="label">🧾 상품명:</span>
-          <span class="value" id="product-name">-</span>
-        </div>
-        <div class="info-line">
-          <span class="label">💳 결제금액:</span>
-          <span class="value" id="product-price">-</span>
-        </div>
+
  <button class="btn-primary" onclick="location.href='https://www.easysaju.kr/'">
           홈으로 돌아가기
         </button>
@@ -317,6 +310,16 @@
       <p class="copyright">© 2025 이지사주. All rights reserved.</p>
     </footer>
   </div>
+ // 사업자 정보 토글
+  const toggleButton = document.getElementById('info-toggle-button');
+  const details      = document.getElementById('business-info-details');
+  const arrow        = document.getElementById('info-arrow');
 
+  if (toggleButton && details && arrow) {
+    toggleButton.addEventListener('click', () => {
+      details.classList.toggle('show');
+      arrow.textContent = details.classList.contains('show') ? '▲' : '▼';
+    });
+  }
 </body>
 </html>
